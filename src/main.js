@@ -12,9 +12,9 @@ textAngular.run([function(){
 	// Require Rangy and rangy savedSelection module.
 	if (typeof define === 'function' && define.amd) {
 		// AMD. Register as an anonymous module.
-		define(function(require) {
-			window.rangy = require('rangy');
-			window.rangy.saveSelection = require('rangy/lib/rangy-selectionsaverestore');
+		require(['rangy/rangy-core', 'rangy/rangy-selectionsaverestore'], function (rangy, saveSelection) {
+			window.rangy = rangy;
+			window.rangy.saveSelection = saveSelection;
 		});
 	} else if (typeof require ==='function' && typeof module !== 'undefined' && typeof exports === 'object') {
 		// Node/CommonJS style
