@@ -2,7 +2,7 @@
 @license textAngular
 Author : Austin Anderson
 License : 2013 MIT
-Version 1.4.6
+Version 1.4.8
 
 See README.md or https://github.com/fraywing/textAngular/wiki for requirements and use.
 */
@@ -1718,25 +1718,39 @@ angular.module('textAngular.taBind', ['textAngular.factories', 'textAngular.DOM'
 							}
 							/* istanbul ignore next: difficult to test as can't seem to select */
 							if(event.keyCode === 13 && !event.shiftKey){
+								var contains = function(a, obj) {
+									for (var i = 0; i < a.length; i++) {
+										if (a[i] === obj) {
+											return true;
+										}
+									}
+									return false;
+								};
 								var $selection;
 								var selection = taSelection.getSelectionElement();
 								if(!selection.tagName.match(VALIDELEMENTS)) return;
 								var _new = angular.element(_defaultVal);
-								if (/^<br(|\/)>$/i.test(selection.innerHTML.trim()) && selection.parentNode.tagName.toLowerCase() === 'blockquote' && !selection.nextSibling) {
-									// if last element in blockquote and element is blank, pull element outside of blockquote.
-									$selection = angular.element(selection);
-									var _parent = $selection.parent();
-									_parent.after(_new);
-									$selection.remove();
-									if(_parent.children().length === 0) _parent.remove();
-									taSelection.setSelectionToElementStart(_new[0]);
-									event.preventDefault();
-								}else if (/^<[^>]+><br(|\/)><\/[^>]+>$/i.test(selection.innerHTML.trim()) && selection.tagName.toLowerCase() === 'blockquote'){
-									$selection = angular.element(selection);
-									$selection.after(_new);
-									$selection.remove();
-									taSelection.setSelectionToElementStart(_new[0]);
-									event.preventDefault();
+								// if we are in the last element of a blockquote, or ul or ol and the element is blank
+								// we need to pull the element outside of the said type
+								var moveOutsideElements = ['blockquote', 'ul', 'ol'];
+								if (contains(moveOutsideElements, selection.parentNode.tagName.toLowerCase())) {
+									if (/^<br(|\/)>$/i.test(selection.innerHTML.trim()) && !selection.nextSibling) {
+										// if last element is blank, pull element outside.
+										$selection = angular.element(selection);
+										var _parent = $selection.parent();
+										_parent.after(_new);
+										$selection.remove();
+										if (_parent.children().length === 0) _parent.remove();
+										taSelection.setSelectionToElementStart(_new[0]);
+										event.preventDefault();
+									}
+									if (/^<[^>]+><br(|\/)><\/[^>]+>$/i.test(selection.innerHTML.trim())) {
+										$selection = angular.element(selection);
+										$selection.after(_new);
+										$selection.remove();
+										taSelection.setSelectionToElementStart(_new[0]);
+										event.preventDefault();
+									}
 								}
 							}
 						}
@@ -2024,9 +2038,9 @@ textAngular.run([function(){
 	// Require Rangy and rangy savedSelection module.
 	if (typeof define === 'function' && define.amd) {
 		// AMD. Register as an anonymous module.
-		define(function(require) {
-			window.rangy = require('rangy');
-			window.rangy.saveSelection = require('rangy/lib/rangy-selectionsaverestore');
+		require(['rangy/rangy-core', 'rangy/rangy-selectionsaverestore'], function (rangy, saveSelection) {
+			window.rangy = rangy;
+			window.rangy.saveSelection = saveSelection;
 		});
 	} else if (typeof require ==='function' && typeof module !== 'undefined' && typeof exports === 'object') {
 		// Node/CommonJS style
@@ -2254,7 +2268,14 @@ textAngular.directive("textAngular", [
 							event.preventDefault();
 							event.stopPropagation();
 							_body.off('mousemove', mousemove);
-							scope.showPopover(_el);
+							// at this point, we need to force the model to update! since the css has changed!
+							// this fixes bug: #862 - we now hide the popover -- as this seems more consitent.
+							// there are still issues under firefox, the window does not repaint. -- not sure
+							// how best to resolve this, but clicking anywhere works.
+							scope.$apply(function (){
+								scope.hidePopover();
+								scope.updateTaBindtaTextElement();
+							}, 100);
 						});
 						event.stopPropagation();
 						event.preventDefault();
