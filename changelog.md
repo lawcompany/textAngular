@@ -1,5 +1,5 @@
-<a name"1.4.9"></a>
-### 1.4.9 (2015-12-28)
+<a name"1.4.10"></a>
+### 1.4.10 (2016-01-04)
 
 
 <a name"1.4.8"></a>
@@ -92,7 +92,7 @@ If you were using a different sanitize provider instead of textAngular-sanitize 
 
 #### Features
 
-* **textAngular:** 
+* **textAngular:**
    * Added directives ta-resize-keep-aspect-ratio and ta-resize-maintain-aspect-ratio to control image-resize ([32697058](https://github.com/fraywing/textAngular/commit/32697058))
    * Added input to the safe element list ([945cfa00](https://github.com/fraywing/textAngular/commit/945cfa00))
 * **textAngularDemo:** Updated the demo to be in synch with this release ([93fd4048](https://github.com/fraywing/textAngular/commit/93fd4048))
@@ -553,7 +553,7 @@ The minimum required versions of AngularJS is 1.3 and Rangy is 1.3.
 
 2014-07-26 v1.2.2
 
-- FIX #190, #201, #206, #223, #224, 
+- FIX #190, #201, #206, #223, #224,
 - Merge #209, #204
 - Add option to disable sanitizer #233
 
@@ -657,7 +657,7 @@ The minimum required versions of AngularJS is 1.3 and Rangy is 1.3.
 - You can now change the model from the outside and have it affect the textAngular instance contents*
 - Cleaned up code*
 
-2013-10-10 v1.0.1 
+2013-10-10 v1.0.1
 
 - Added Tooltip Option, title has been renamed icon, and title is now the tooltip*
 - The minified version actually works now*
