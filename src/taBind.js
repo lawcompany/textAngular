@@ -667,11 +667,7 @@ angular.module('textAngular.taBind', ['textAngular.factories', 'textAngular.DOM'
 								_types += " " + clipboardData.types[_t];
 							}
 							/* istanbul ignore next: browser tests */
-							if (/text\/html/i.test(_types)) {
-								pastedContent = clipboardData.getData('text/html');
-							} else if (/text\/plain/i.test(_types)) {
-								pastedContent = clipboardData.getData('text/plain');
-							}
+							pastedContent = clipboardData.getData('text/plain');
 
 							processpaste(pastedContent);
 							e.stopPropagation();
