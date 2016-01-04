@@ -2,7 +2,7 @@
 @license textAngular
 Author : Austin Anderson
 License : 2013 MIT
-Version 1.4.9
+Version 1.4.10
 
 See README.md or https://github.com/fraywing/textAngular/wiki for requirements and use.
 */
@@ -1641,7 +1641,13 @@ angular.module('textAngular.taBind', ['textAngular.factories', 'textAngular.DOM'
 								_types += " " + clipboardData.types[_t];
 							}
 							/* istanbul ignore next: browser tests */
-							pastedContent = clipboardData.getData('text/plain');
+							if (/text\/html/i.test(_types)) {
+								var removeStyleRegex = / style=".+?"/gi;
+								pastedContent = clipboardData.getData('text/html');
+								pastedContent = pastedContent.replace(removeStyleRegex, '');
+							} else if (/text\/plain/i.test(_types)) {
+								pastedContent = clipboardData.getData('text/plain');
+							}
 
 							processpaste(pastedContent);
 							e.stopPropagation();
