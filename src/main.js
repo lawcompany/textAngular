@@ -10,12 +10,7 @@ textAngular.config([function(){
 textAngular.run([function(){
 	/* istanbul ignore next: not sure how to test this */
 	// Require Rangy and rangy savedSelection module.
-	if (typeof define === 'function' && define.amd) {
-		// AMD. Register as an anonymous module.
-		require(['rangy/rangy-core', 'rangy/rangy-selectionsaverestore'], function (rangy) {
-			window.rangy = rangy;
-		});
-	} else if (typeof require ==='function' && typeof module !== 'undefined' && typeof exports === 'object') {
+	if (typeof require ==='function' && typeof module !== 'undefined' && typeof exports === 'object') {
 		// Node/CommonJS style
 		window.rangy = require('rangy');
 		window.rangy.saveSelection = require('rangy/lib/rangy-selectionsaverestore');
