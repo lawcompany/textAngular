@@ -2,7 +2,7 @@
 @license textAngular
 Author : Austin Anderson
 License : 2013 MIT
-Version 1.4.13
+Version 1.4.14
 
 See README.md or https://github.com/fraywing/textAngular/wiki for requirements and use.
 */
@@ -2041,7 +2041,7 @@ textAngular.run([function(){
 	if (typeof require ==='function' && typeof module !== 'undefined' && typeof exports === 'object') {
 		// Node/CommonJS style
 		window.rangy = require('rangy');
-		window.rangy.saveSelection = require('rangy/lib/rangy-selectionsaverestore');
+		require('rangy/lib/rangy-selectionsaverestore');
 	} else {
 		// Ensure that rangy and rangy.saveSelection exists on the window (global scope).
 		// TODO: Refactor so that the global scope is no longer used.
